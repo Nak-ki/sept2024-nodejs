@@ -1,24 +1,38 @@
-const afs = require('node:fs/promises');
-const fs = require('node:fs');
-const readline = require('node:readline/promises');
-const path = require('node:path');
+const express = require('express');
+const {userService} = require("./services/user.service");
 
-const filePath = path.join('emails.txt');
+const app = express();
 
-const email = async () => {
-    const fileStream = fs.createReadStream(filePath, 'utf-8');
-    const rl = readline.createInterface({input:fileStream});
-    try {
-        for await (const line of rl){
-            if (line.includes("gmail.com")){
-                const emailRes = line.split("").splice(34)
-                const email = emailRes.join("")
-                await afs.appendFile('res.txt', `${email}\n`)
-            }
-        }
-    }finally {
-        await rl.close()
-    }
-}
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
-email()
+app.get('/users', async (req, res)=>{
+    const result = await userService.getAll();
+    res.json(result)
+})
+app.get('/users/:id', async (req, res)=>{
+    const id = req.params.id;
+    const result = await userService.getById(id);
+    res.json(result)
+})
+app.post('/users', async (req, res)=>{
+    const user = req.body;
+    const result = await userService.create(user);
+    res.json(result)
+})
+
+app.put('/users/:id', async (req, res)=>{
+    const user = req.body;
+    const id = req.params.id;
+    const result = await userService.update(id, user);
+    res.json(result)
+})
+
+app.delete('/users/:id', async (req, res)=>{
+    const id = req.params.id;
+    await userService.delete(id);
+})
+
+app.listen(5000, ()=>{
+    console.log('server running on 5000 port');
+})

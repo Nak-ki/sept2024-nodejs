@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Kuro",
+    "surname": "Shiro",
+    "age": "18"
+  },
+  {
+    "id": 2,
+    "name": "Shiro",
+    "surname": "Kuro",
+    "age": "20"
+  },
+  {
+    "id": 4,
+    "name": "Ringo",
+    "surname": "Yamanaka",
+    "age": "31"
+  }
+]
