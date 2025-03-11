@@ -1,3 +1,5 @@
 .idea
 sept2024-nodejs.iml
 node_modules
+.env
+dist
