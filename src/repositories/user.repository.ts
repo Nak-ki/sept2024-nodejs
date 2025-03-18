@@ -10,8 +10,8 @@ class UserRepository{
         return User.create(user)
     }
 
-    public getById(userId:string):Promise<IUser>{
-        return User.findById(userId)
+    public async getById(userId:string):Promise<IUser>{
+        return await User.findById(userId)
     }
 
     public updateById(userId:string, data: IUserDTO):Promise<IUser>{
