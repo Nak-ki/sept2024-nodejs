@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from "express";
-import { isObjectIdOrHexString } from "mongoose";
+import { NextFunction, Request, Response } from "express";
 import { ObjectSchema } from "joi";
-import {ApiError} from "../errors/api.errors";
+import { isObjectIdOrHexString } from "mongoose";
+
+import { ApiError } from "../errors/api.errors";
 
 class CommonMiddleware {
     public isIdValidate(key: string) {
@@ -12,7 +13,7 @@ class CommonMiddleware {
                 if (!isObjectIdOrHexString(id)) {
                     throw new ApiError(`Invalide id [${key}]`, 400);
                 }
-                next()
+                next();
             } catch (e) {
                 next(e);
             }
@@ -23,7 +24,7 @@ class CommonMiddleware {
         return async (req: Request, res: Response, next: NextFunction) => {
             try {
                 req.body = await validator.validateAsync(req.body);
-                next()
+                next();
             } catch (e) {
                 next(new ApiError(e.details[0].message, 400));
             }
