@@ -1,25 +1,42 @@
-import { IUser, IUserDTO } from "../interfaces/user.interface";
+import {
+    IUser,
+    IUserCreateDTO,
+    IUserUpdateDTO,
+} from "../interfaces/user.interface";
 import { User } from "../models/user.model";
 
 class UserRepository {
     public getAll(): Promise<IUser[]> {
         return User.find();
     }
-
-    public create(user: IUserDTO): Promise<IUser> {
+    public create(user: IUserCreateDTO): Promise<IUser> {
         return User.create(user);
     }
-
-    public async getById(userId: string): Promise<IUser> {
-        return await User.findById(userId);
+    public getById(userId: string): Promise<IUser> {
+        return User.findById(userId);
     }
-
-    public updateById(userId: string, data: IUserDTO): Promise<IUser> {
-        return User.findByIdAndUpdate(userId, data, { new: true });
+    public updateById(userId: string, user: IUserUpdateDTO): Promise<IUser> {
+        return User.findByIdAndUpdate(userId, user, { new: true });
     }
-
-    public deleteById(userId: string): Promise<void> {
+    public deleteById(userId: string): Promise<IUser> {
         return User.findByIdAndDelete(userId);
+    }
+    public getByEmail(email: string): Promise<IUser> {
+        return User.findOne({ email });
+    }
+    public bannedById(userId: string): Promise<IUser> {
+        return User.findByIdAndUpdate(
+            userId,
+            { isBanned: true },
+            { new: true },
+        );
+    }
+    public unbannedById(userId: string): Promise<IUser> {
+        return User.findByIdAndUpdate(
+            userId,
+            { isBanned: false },
+            { new: true },
+        );
     }
 }
 
