@@ -1,10 +1,22 @@
-export interface IUser {
+import { IBase } from "./base.interface";
+
+interface IUser extends IBase {
+    email: string;
+    password: string;
+    role: string;
+    isDelete: boolean;
+    isVerified: boolean;
     _id: string;
     name: string;
     surname: string;
     age: number;
-    createdAt: Date;
-    updatedAt: Date;
 }
 
-export type IUserDTO = Pick<IUser, "name" | "surname" | "age">;
+type IUserCreateDTO = Pick<
+    IUser,
+    "email" | "password" | "name" | "surname" | "age"
+>;
+
+type IUserUpdateDTO = Pick<IUser, "name" | "surname" | "age">;
+
+export type { IUser, IUserCreateDTO, IUserUpdateDTO };
