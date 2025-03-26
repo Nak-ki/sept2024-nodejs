@@ -22,4 +22,9 @@ export class UserValidator {
         surname: this.surname.required(),
         age: this.age.required(),
     });
+
+    public static signIn = joi.object({
+        email: this.email.required(),
+        password: this.password.required(),
+    });
 }

@@ -8,7 +8,6 @@ import { tokenRepository } from "../repositories/token.repository";
 
 class TokenService {
     public generateTokens(payload: ITokenPayload): ITokenPair {
-        console.log(typeof config.JWT_ACCESS_LIFETIME);
         const accessToken = jwt.sign(payload, config.JWT_ACCESS_SECRET, {
             expiresIn: "10m",
         });

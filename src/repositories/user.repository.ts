@@ -24,17 +24,13 @@ class UserRepository {
     public getByEmail(email: string): Promise<IUser> {
         return User.findOne({ email });
     }
-    public bannedById(userId: string): Promise<IUser> {
+    public bannedById(
+        userId: string,
+        dto: { isBanned: boolean },
+    ): Promise<IUser> {
         return User.findByIdAndUpdate(
             userId,
-            { isBanned: true },
-            { new: true },
-        );
-    }
-    public unbannedById(userId: string): Promise<IUser> {
-        return User.findByIdAndUpdate(
-            userId,
-            { isBanned: false },
+            { isBanned: dto.isBanned },
             { new: true },
         );
     }

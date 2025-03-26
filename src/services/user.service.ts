@@ -60,26 +60,17 @@ class UserService {
         }
     }
 
-    public async banned(userId: string): Promise<IUser> {
+    public async banned(
+        userId: string,
+        dto: { isBanned: boolean },
+    ): Promise<IUser> {
         const data = await userRepository.getById(userId);
 
         if (!data) {
             throw new ApiError("User not found", StatusCodesEnum.NOT_FOUND);
         }
-        if (data.isBanned) return;
 
-        return await userRepository.bannedById(userId);
-    }
-
-    public async unbanned(userId: string): Promise<IUser> {
-        const data = await userRepository.getById(userId);
-
-        if (!data) {
-            throw new ApiError("User not found", StatusCodesEnum.NOT_FOUND);
-        }
-        if (!data.isBanned) return;
-
-        return await userRepository.unbannedById(userId);
+        return await userRepository.bannedById(userId, dto);
     }
 }
 

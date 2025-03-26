@@ -26,23 +26,8 @@ class AuthService {
 
     public async signIn(
         dto: IAuth,
+        user: IUser,
     ): Promise<{ user: IUser; tokens: ITokenPair }> {
-        const user = await userRepository.getByEmail(dto.email);
-
-        if (!user) {
-            throw new ApiError(
-                "Email or password invalid",
-                StatusCodesEnum.UNAUTHORIZED,
-            );
-        }
-
-        if (user.isBanned) {
-            throw new ApiError(
-                "You were banned!",
-                StatusCodesEnum.UNAUTHORIZED,
-            );
-        }
-
         const isValidPassword = await passwordService.comparePassword(
             dto.password,
             user.password,

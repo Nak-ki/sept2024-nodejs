@@ -23,19 +23,12 @@ router.delete(
     commonMiddleware.isIdValidate("id"),
     userController.deleteById,
 );
-router.put(
+router.patch(
     "/:id/banned",
     authMiddleware.checkAccessToken,
     userMiddleware.isAdmin,
     commonMiddleware.isIdValidate("id"),
     userController.banned,
-);
-router.put(
-    "/:id/unbanned",
-    authMiddleware.checkAccessToken,
-    userMiddleware.isAdmin,
-    commonMiddleware.isIdValidate("id"),
-    userController.unbanned,
 );
 
 export const userRouter = router;

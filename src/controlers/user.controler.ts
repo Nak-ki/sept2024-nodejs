@@ -47,19 +47,9 @@ class UserController {
 
     public async banned(req: Request, res: Response, next: NextFunction) {
         try {
+            const dto = req.body as { isBanned: boolean };
             const { id } = req.params;
-            const result = await userService.banned(id);
-
-            res.status(StatusCodesEnum.CREATED).json(result);
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    public async unbanned(req: Request, res: Response, next: NextFunction) {
-        try {
-            const { id } = req.params;
-            const result = await userService.unbanned(id);
+            const result = await userService.banned(id, dto);
 
             res.status(StatusCodesEnum.CREATED).json(result);
         } catch (e) {
