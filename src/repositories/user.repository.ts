@@ -26,13 +26,19 @@ class UserRepository {
     }
     public bannedById(
         userId: string,
-        dto: { isBanned: boolean },
+        dto: { isActive: boolean },
     ): Promise<IUser> {
         return User.findByIdAndUpdate(
             userId,
-            { isBanned: dto.isBanned },
+            { isActive: dto.isActive },
             { new: true },
         );
+    }
+    public updateAccountStatus(
+        userId: string,
+        isActive: { isActive: boolean },
+    ): Promise<IUser> {
+        return User.findByIdAndUpdate(userId, isActive, { new: true });
     }
 }
 

@@ -8,7 +8,7 @@ interface IUser extends IBase {
     role: RoleEnum;
     isDeleted: boolean;
     isVerified: boolean;
-    isBanned: boolean;
+    isActive: boolean;
     name: string;
     surname: string;
     age: number;

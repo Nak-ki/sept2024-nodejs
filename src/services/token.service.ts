@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import { config } from "../configs/configs";
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ApiError } from "../errors/api.errors";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
@@ -57,6 +58,47 @@ class TokenService {
             [type]: token,
         });
         return !!iTokenPromise;
+    }
+
+    public generateActionToken(
+        payload: ITokenPayload,
+        type: ActionTokenTypeEnum,
+    ): string {
+        let secret: string;
+        // let expiresIn: string;
+
+        switch (type) {
+            case ActionTokenTypeEnum.ACTIVATE_ACCOUNT:
+                secret = config.ACTION_ACTIVATE_SECRET;
+                // expiresIn = config.ACTION_ACTIVATE_LIFETIME;
+                break;
+            default:
+                throw new ApiError("Invalid token type", 400);
+        }
+        return jwt.sign(payload, secret, {
+            expiresIn: "30m",
+        });
+    }
+    public checkActionToken(
+        token: string,
+        type: ActionTokenTypeEnum,
+    ): ITokenPayload {
+        try {
+            let secret: string;
+
+            switch (type) {
+                case ActionTokenTypeEnum.ACTIVATE_ACCOUNT:
+                    secret = config.ACTION_ACTIVATE_SECRET;
+                    break;
+
+                default:
+                    throw new ApiError("Invalid token type", 500);
+            }
+            return jwt.verify(token, secret) as ITokenPayload;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (e) {
+            throw new ApiError("Invalid token", 401);
+        }
     }
 }
 

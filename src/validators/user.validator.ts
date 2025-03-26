@@ -1,6 +1,6 @@
 import joi from "joi";
 
-import { RegexEnum } from "../enums/regex.interface";
+import { RegexEnum } from "../enums/regex.enum";
 
 export class UserValidator {
     private static email = joi.string().email().trim();

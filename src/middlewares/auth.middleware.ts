@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { StatusCodesEnum } from "../enums/status-codes.enum";
 import { ApiError } from "../errors/api.errors";
 import { IRefresh } from "../interfaces/token.interface";
+import { actionTokenRepository } from "../repositories/action-token.repository";
 import { tokenService } from "../services/token.service";
 
 class AuthMiddleware {
@@ -87,6 +89,30 @@ class AuthMiddleware {
         } catch (e) {
             next(e);
         }
+    }
+
+    public checkActionToken(type: ActionTokenTypeEnum, key = "token") {
+        return async (req: Request, res: Response, next: NextFunction) => {
+            try {
+                const actionToken = req.query[key] as string;
+                if (!actionToken) {
+                    throw new ApiError("No token provided", 400);
+                }
+                const payload = tokenService.checkActionToken(
+                    actionToken,
+                    type,
+                );
+                const entity =
+                    await actionTokenRepository.getByToken(actionToken);
+                if (!entity) {
+                    throw new ApiError("Invalid token", 401);
+                }
+                req.res.locals.jwtPayload = payload;
+                next();
+            } catch (e) {
+                next(e);
+            }
+        };
     }
 }
 

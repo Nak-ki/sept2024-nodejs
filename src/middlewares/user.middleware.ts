@@ -28,9 +28,9 @@ class UserMiddleware {
         try {
             const user = req.res.locals.user as IUser;
 
-            if (user.isBanned) {
+            if (user.isActive) {
                 throw new ApiError(
-                    "You were banned!",
+                    "Your account is not active!",
                     StatusCodesEnum.UNAUTHORIZED,
                 );
             }

@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { authController } from "../controlers/auth.controler";
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { userMiddleware } from "../middlewares/user.middleware";
@@ -28,11 +29,12 @@ router.post(
     authMiddleware.checkRefreshToken,
     authController.refresh,
 );
-router.get(
-    "/me",
+router.get("/me", authMiddleware.checkAccessToken, authController.me);
 
-    authMiddleware.checkAccessToken,
-    authController.me,
+router.patch(
+    "/activate",
+    authMiddleware.checkActionToken(ActionTokenTypeEnum.ACTIVATE_ACCOUNT),
+    authController.activateAccount,
 );
 
 export const authRouter = router;

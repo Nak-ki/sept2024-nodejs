@@ -47,7 +47,7 @@ class UserController {
 
     public async banned(req: Request, res: Response, next: NextFunction) {
         try {
-            const dto = req.body as { isBanned: boolean };
+            const dto = req.body as { isActive: boolean };
             const { id } = req.params;
             const result = await userService.banned(id, dto);
 

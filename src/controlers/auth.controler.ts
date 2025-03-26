@@ -60,6 +60,22 @@ class AuthController {
             next(e);
         }
     }
+
+    public async activateAccount(
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): Promise<void> {
+        try {
+            const tokenPayload = req.res.locals.jwtPayload as ITokenPayload;
+            console.log(tokenPayload);
+            await authService.activateAccount(tokenPayload);
+
+            res.sendStatus(StatusCodesEnum.OK);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export const authController = new AuthController();

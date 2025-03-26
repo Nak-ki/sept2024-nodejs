@@ -62,7 +62,7 @@ class UserService {
 
     public async banned(
         userId: string,
-        dto: { isBanned: boolean },
+        dto: { isActive: boolean },
     ): Promise<IUser> {
         const data = await userRepository.getById(userId);
 
