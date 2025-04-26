@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { StatusCodesEnum } from "../enums/status-codes.enum";
+import { ITokenPayload } from "../interfaces/token.interface";
 import { IUserUpdateDTO } from "../interfaces/user.interface";
 import { userService } from "../services/user.service";
 
@@ -52,6 +53,18 @@ class UserController {
             const result = await userService.banned(id, dto);
 
             res.status(StatusCodesEnum.CREATED).json(result);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    public async uploadAvatar(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { userId } = req.res.locals.tokenPayload as ITokenPayload;
+            const data = await userService.updateById(userId, {
+                avatar: req.file.path,
+            });
+            res.status(StatusCodesEnum.OK).json(data);
         } catch (e) {
             next(e);
         }
